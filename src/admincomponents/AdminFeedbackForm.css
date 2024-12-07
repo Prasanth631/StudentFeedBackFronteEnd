@@ -1,0 +1,151 @@
+/* AdminFeedbackForm.css */
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --background-color: #f4f6f7;
+  --text-color: #2c3e50;
+  --border-color: #bdc3c7;
+  --error-color: #e74c3c;
+  --urgent-color: #f39c12;
+}
+
+.admin-notification-form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.admin-notification-form:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  transform: translateY(-5px);
+}
+
+.admin-notification-form h2 {
+  text-align: center;
+  color: var(--primary-color);
+  margin-bottom: 2rem;
+  font-weight: 600;
+  position: relative;
+  padding-bottom: 10px;
+}
+
+.admin-notification-form h2::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 50px;
+  height: 3px;
+  background-color: var(--primary-color);
+  transform: translateX(-50%);
+}
+
+.admin-notification-form form > div {
+  margin-bottom: 1.5rem;
+  position: relative;
+}
+
+.admin-notification-form label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-color);
+  font-weight: 500;
+}
+
+.admin-notification-form input,
+.admin-notification-form select,
+.admin-notification-form textarea {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 1rem;
+}
+
+.admin-notification-form input:focus,
+.admin-notification-form select:focus,
+.admin-notification-form textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.admin-notification-form textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+.admin-notification-form input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+.admin-notification-form button {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.admin-notification-form button:hover {
+  background-color: #2980b9;
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.admin-notification-form button:active {
+  transform: translateY(0);
+  box-shadow: none;
+}
+
+/* Urgent Checkbox Styling */
+.admin-notification-form input[name="isUrgent"]:checked + label {
+  color: var(--urgent-color);
+  font-weight: bold;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.admin-notification-form {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.admin-notification-form form > div {
+  animation: fadeIn 0.6s ease-out;
+  animation-fill-mode: backwards;
+}
+
+.admin-notification-form form > div:nth-child(2) { animation-delay: 0.1s; }
+.admin-notification-form form > div:nth-child(3) { animation-delay: 0.2s; }
+.admin-notification-form form > div:nth-child(4) { animation-delay: 0.3s; }
+.admin-notification-form form > div:nth-child(5) { animation-delay: 0.4s; }
+.admin-notification-form button { animation-delay: 0.5s; }
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+  .admin-notification-form {
+      margin: 1rem;
+      padding: 1rem;
+  }
+}
+
+/* Error State */
+.admin-notification-form input:invalid,
+.admin-notification-form select:invalid,
+.admin-notification-form textarea:invalid {
+  border-color: var(--error-color);
+}
