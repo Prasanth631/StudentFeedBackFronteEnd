@@ -2,38 +2,33 @@
 :root {
   --primary-color: #3498db;
   --secondary-color: #2ecc71;
+  --text-color: #333;
   --background-color: #f4f6f7;
-  --text-color: #2c3e50;
-  --border-color: #bdc3c7;
-  --error-color: #e74c3c;
-  --urgent-color: #f39c12;
+  --border-color: #e0e4e6;
+  --transition-speed: 0.3s;
+  --border-radius: 8px;
 }
 
-.admin-notification-form {
+.af-admin-notification-form {
   max-width: 600px;
   margin: 2rem auto;
-  padding: 2rem;
   background-color: white;
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
+  padding: 2rem;
+  border-radius: var(--border-radius);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-.admin-notification-form:hover {
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
-  transform: translateY(-5px);
-}
-
-.admin-notification-form h2 {
+.af-admin-notification-form h2 {
   text-align: center;
   color: var(--primary-color);
-  margin-bottom: 2rem;
+  margin-bottom: 1.5rem;
   font-weight: 600;
   position: relative;
-  padding-bottom: 10px;
+  padding-bottom: 0.5rem;
 }
 
-.admin-notification-form h2::after {
+.af-admin-notification-form h2::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -44,108 +39,115 @@
   transform: translateX(-50%);
 }
 
-.admin-notification-form form > div {
-  margin-bottom: 1.5rem;
-  position: relative;
+.af-form-group {
+  margin-bottom: 1rem;
 }
 
-.admin-notification-form label {
+.af-form-group label {
   display: block;
   margin-bottom: 0.5rem;
   color: var(--text-color);
   font-weight: 500;
 }
 
-.admin-notification-form input,
-.admin-notification-form select,
-.admin-notification-form textarea {
+.af-form-group input,
+.af-form-group select,
+.af-form-group textarea {
   width: 100%;
   padding: 0.75rem;
   border: 1px solid var(--border-color);
-  border-radius: 8px;
-  transition: all 0.3s ease;
+  border-radius: var(--border-radius);
+  transition: all var(--transition-speed) ease;
   font-size: 1rem;
 }
 
-.admin-notification-form input:focus,
-.admin-notification-form select:focus,
-.admin-notification-form textarea:focus {
+.af-form-group input:focus,
+.af-form-group select:focus,
+.af-form-group textarea:focus {
   outline: none;
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
-.admin-notification-form textarea {
+.af-form-group textarea {
   min-height: 120px;
   resize: vertical;
 }
 
-.admin-notification-form input[type="checkbox"] {
-  width: auto;
-  margin-right: 0.5rem;
+.af-form-group.af-checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.5rem;
 }
 
-.admin-notification-form button {
+.af-form-group.af-checkbox-group label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  cursor: pointer;
+}
+
+.af-form-group.af-checkbox-group input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+  accent-color: var(--primary-color);
+}
+
+.af-submit-button {
   width: 100%;
   padding: 0.75rem;
   background-color: var(--primary-color);
   color: white;
   border: none;
-  border-radius: 8px;
-  cursor: pointer;
+  border-radius: var(--border-radius);
   font-weight: 600;
-  transition: all 0.3s ease;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+  font-size: 1rem;
 }
 
-.admin-notification-form button:hover {
+.af-submit-button:hover {
   background-color: #2980b9;
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.admin-notification-form button:active {
+.af-submit-button:active {
   transform: translateY(0);
-  box-shadow: none;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Urgent Checkbox Styling */
-.admin-notification-form input[name="isUrgent"]:checked + label {
-  color: var(--urgent-color);
-  font-weight: bold;
-}
-
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-.admin-notification-form {
-  animation: fadeIn 0.6s ease-out;
-}
-
-.admin-notification-form form > div {
-  animation: fadeIn 0.6s ease-out;
-  animation-fill-mode: backwards;
-}
-
-.admin-notification-form form > div:nth-child(2) { animation-delay: 0.1s; }
-.admin-notification-form form > div:nth-child(3) { animation-delay: 0.2s; }
-.admin-notification-form form > div:nth-child(4) { animation-delay: 0.3s; }
-.admin-notification-form form > div:nth-child(5) { animation-delay: 0.4s; }
-.admin-notification-form button { animation-delay: 0.5s; }
-
-/* Responsive Design */
-@media screen and (max-width: 600px) {
-  .admin-notification-form {
-      margin: 1rem;
-      padding: 1rem;
+/* Responsive Adjustments */
+@media screen and (max-width: 768px) {
+  .af-admin-notification-form {
+      width: 95%;
+      padding: 1.5rem;
+      margin: 1rem auto;
   }
 }
 
-/* Error State */
-.admin-notification-form input:invalid,
-.admin-notification-form select:invalid,
-.admin-notification-form textarea:invalid {
-  border-color: var(--error-color);
+/* Custom Style for Select Options */
+.af-form-group select option {
+  padding: 0.5rem;
+}
+
+/* Subtle Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.af-admin-notification-form {
+  animation: fadeIn var(--transition-speed) ease-out;
+}
+
+/* Error and Validation States (Optional) */
+.af-form-group.error input,
+.af-form-group.error select,
+.af-form-group.error textarea {
+  border-color: #e74c3c;
+}
+
+.af-form-group.error label {
+  color: #e74c3c;
 }

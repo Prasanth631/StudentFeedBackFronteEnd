@@ -11,7 +11,7 @@ const GeneralFeedbackForm = () => {
     studentId: '',
     department: '',
     year: '',
-    isHosteler: false,
+    isHosteler: false, // Explicitly set to false by default
     buildingCleanliness: '',
     classroomCondition: '',
     washroomCleanliness: '',
@@ -57,6 +57,21 @@ const GeneralFeedbackForm = () => {
     }));
   };
 
+  const toggleHostelerStatus = (status) => {
+    setIsHosteler(status);
+    setFormData(prev => ({
+      ...prev,
+      isHosteler: status,
+      ...(status ? {} : {
+        roomCondition: '',
+        hostelFood: '',
+        hostelCleanliness: '',
+        hostelStaff: ''
+      })
+    }));
+
+    setActiveTab(status ? 'hostel' : 'facilities');
+  };
   const validateForm = () => {
     if (!formData.studentId.trim()) {
       setNotification({ 
@@ -166,8 +181,8 @@ const GeneralFeedbackForm = () => {
         },
         body: JSON.stringify({
           ...formData,
-          // Explicitly set isHosteler to true or false
-          isHosteler: isHosteler === true // Ensure boolean conversion
+          // Explicitly set isHosteler to the current state
+          isHosteler: isHosteler
         })
       });
       
@@ -192,6 +207,7 @@ const GeneralFeedbackForm = () => {
       setLoading(false);
     }
   };
+
   const renderRatingSelect = (field, label) => (
     <div className="form-group">
       <label>{label}</label>
@@ -208,6 +224,7 @@ const GeneralFeedbackForm = () => {
       </select>
     </div>
   );
+
 
   return (
     <div className="feedback-container">
@@ -273,31 +290,27 @@ const GeneralFeedbackForm = () => {
         </div>
 
         <div className="hosteler-toggle">
-          <label>Are you a hosteler?</label>
-          <div className="toggle-buttons">
-            <button
-              type="button"
-              className={`toggle-button ${isHosteler ? 'active' : ''}`}
-              onClick={() => {
-                setIsHosteler(true);
-                handleInputChange('isHosteler', true);
-              }}
-            >
-              Yes
-            </button>
-            <button
-              type="button"
-              className={`toggle-button ${!isHosteler ? 'active' : ''}`}
-              onClick={() => {
-                setIsHosteler(false);
-                handleInputChange('isHosteler', false);
-              }}
-            >
-              No
-            </button>
-          </div>
-        </div>
-
+  <label>Are you a hosteler?</label>
+  <div className="toggle-container">
+    <label className="toggle-switch">
+      <input
+        type="checkbox"
+        checked={isHosteler}
+        onChange={() => toggleHostelerStatus(!isHosteler)}
+        className="toggle-input"
+      />
+      <span className="toggle-slider"></span>
+    </label>
+    <span className="toggle-label">
+      {isHosteler ? 'Hosteler (Residing in Campus Hostel)' : 'Day Scholar (Non-Hosteler)'}
+    </span>
+  </div>
+  {isHosteler && (
+    <p className="toggle-hint">
+      * Additional hostel-related feedback sections will be available
+    </p>
+  )}
+</div>
         <div className="tabs">
           <button
             type="button"
@@ -323,6 +336,7 @@ const GeneralFeedbackForm = () => {
             </button>
           )}
         </div>
+
 
         <div className="tab-content">
           {activeTab === 'facilities' && (

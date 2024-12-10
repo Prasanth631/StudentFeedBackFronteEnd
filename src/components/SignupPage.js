@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'; // Removed unused useEffect
 import { useNavigate } from 'react-router-dom';
-import kluLogo from './images/image copy.png';
+//import kluLogo from './images/image copy.png';
 import './LoginPage.css';
 
 function Signup() {
@@ -33,7 +33,7 @@ function Signup() {
 
   const validatePhoneNumber = (value) => {
     if (!value) return "Phone number cannot be blank";
-    if (!/^\+?[0-9]{10,14}$/.test(value)) return "Phone number must be 10-14 digits";
+    if (!/^\+?[0-9]{10,14}$/.test(value)) return "Phone number must be 10 digits";
     return "";
   };
 
@@ -168,34 +168,55 @@ function Signup() {
       phoneNumber,
       password
     };
-
     try {
-      await axios.post('http://localhost:8080/api/auth/signup', user);
+      const response = await axios.post('http://localhost:8080/api/auth/signup', user);
+      if (response.data.success) {
+          console.log('Server response:', response.data);
+      }
+
       setSuccessMessage("Registration successful!");
       setErrorMessage('');
       navigate('/');  
       window.scrollTo(0, 0);
-    } catch (error) {
-      console.error("There was an error during registration!", error);
+  } catch (error) {
+      console.error("Full error object:", error);
+      console.error("Error response:", error.response);
+      console.error("Error message:", error.message);
       
-      if (error.response && error.response.data) {
-        const backendErrors = error.response.data;
-        
-        const mappedErrors = {};
-        if (backendErrors.username) mappedErrors.username = backendErrors.username;
-        if (backendErrors.email) mappedErrors.email = backendErrors.email;
-        if (backendErrors.phoneNumber) mappedErrors.phoneNumber = backendErrors.phoneNumber;
-        if (backendErrors.password) mappedErrors.password = backendErrors.password;
-        
-        if (Object.keys(mappedErrors).length > 0) {
-          setValidationErrors(mappedErrors);
-        } else {
-          setErrorMessage("Registration failed");
-        }
+      if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          console.error("Data:", error.response.data);
+          console.error("Status:", error.response.status);
+          console.error("Headers:", error.response.headers);
+          
+          const backendErrors = error.response.data;
+          
+          const mappedErrors = {};
+          if (typeof backendErrors === 'object') {
+              if (backendErrors.username) mappedErrors.username = backendErrors.username;
+              if (backendErrors.email) mappedErrors.email = backendErrors.email;
+              if (backendErrors.phoneNumber) mappedErrors.phoneNumber = backendErrors.phoneNumber;
+              if (backendErrors.password) mappedErrors.password = backendErrors.password;
+          } else {
+              setErrorMessage(backendErrors || "Registration failed");
+          }
+          
+          if (Object.keys(mappedErrors).length > 0) {
+              setValidationErrors(mappedErrors);
+          } else {
+              setErrorMessage("Registration failed");
+          }
+      } else if (error.request) {
+          // The request was made but no response was received
+          console.error("No response received:", error.request);
+          setErrorMessage("No response from server");
       } else {
-        setErrorMessage("Registration failed");
+          // Something happened in setting up the request that triggered an Error
+          console.error("Error setting up request:", error.message);
+          setErrorMessage("Error setting up request");
       }
-    }
+  }
   };
 
   return (
@@ -204,8 +225,7 @@ function Signup() {
         <div className="image-section" />
         <div className="login-section">
           <div className="login-header">
-            <img src={kluLogo} alt="K L University Logo" className="klu-logo" />
-            <h1>Student FeedBack System</h1>
+            
           </div>
           <form className="login-form" onSubmit={handleRegister}>
             {/* Username Input */}

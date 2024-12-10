@@ -25,8 +25,8 @@ const AdminDashboard = () => {
       // Process dashboard data
       const processedData = {
         totalResponses: data.length,
-        hostelerCount: data.filter(item => item.isHosteler).length,
-        dayScholarCount: data.filter(item => !item.isHosteler).length,
+        hostelerCount: data.filter(item => item.hosteler).length,
+        dayScholarCount: data.filter(item => !item.hosteler).length,
         departmentStats: data.reduce((acc, item) => {
           acc[item.department] = (acc[item.department] || 0) + 1;
           return acc;
@@ -42,20 +42,36 @@ const AdminDashboard = () => {
 
   const fetchHostelData = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/feedback/all');
-      const data = await response.json();
+      // Fetch from both general feedback and hostel-specific endpoints
+      const generalFeedbackResponse = await fetch('http://localhost:8080/api/feedback/hosteler/true');
+      const hostelDataResponse = await fetch('http://localhost:8080/api/hostel/all');
       
-      // Filter only hostel data
-      const hostelResponses = data.filter(item => item.isHosteler);
+      const generalHostelData = await generalFeedbackResponse.json();
+      const specificHostelData = await hostelDataResponse.json();
+      
+      // Combine and deduplicate data
+      const combinedHostelData = [...generalHostelData, ...specificHostelData];
       
       // Process hostel data
       const processedHostelData = {
-        roomCondition: hostelResponses.reduce((acc, item) => {
-          acc[item.roomCondition] = (acc[item.roomCondition] || 0) + 1;
+        roomCondition: combinedHostelData.reduce((acc, item) => {
+          const rating = item.roomCondition || 'Not Rated';
+          acc[rating] = (acc[rating] || 0) + 1;
           return acc;
         }, {}),
-        hostelFood: hostelResponses.reduce((acc, item) => {
-          acc[item.hostelFood] = (acc[item.hostelFood] || 0) + 1;
+        hostelFood: combinedHostelData.reduce((acc, item) => {
+          const rating = item.hostelFood || 'Not Rated';
+          acc[rating] = (acc[rating] || 0) + 1;
+          return acc;
+        }, {}),
+        hostelCleanliness: combinedHostelData.reduce((acc, item) => {
+          const rating = item.hostelCleanliness || 'Not Rated';
+          acc[rating] = (acc[rating] || 0) + 1;
+          return acc;
+        }, {}),
+        hostelStaff: combinedHostelData.reduce((acc, item) => {
+          const rating = item.hostelStaff || 'Not Rated';
+          acc[rating] = (acc[rating] || 0) + 1;
           return acc;
         }, {})
       };
@@ -74,11 +90,13 @@ const AdminDashboard = () => {
       // Process canteen data
       const processedCanteenData = {
         foodQuality: data.reduce((acc, item) => {
-          acc[item.foodQuality] = (acc[item.foodQuality] || 0) + 1;
+          const rating = item.foodQuality || 'Not Rated';
+          acc[rating] = (acc[rating] || 0) + 1;
           return acc;
         }, {}),
         canteenPricing: data.reduce((acc, item) => {
-          acc[item.canteenPricing] = (acc[item.canteenPricing] || 0) + 1;
+          const rating = item.canteenPricing || 'Not Rated';
+          acc[rating] = (acc[rating] || 0) + 1;
           return acc;
         }, {})
       };
@@ -180,6 +198,7 @@ const AdminDashboard = () => {
                   <th>Student ID</th>
                   <th>Department</th>
                   <th>Date</th>
+                  <th>Hosteler</th>
                 </tr>
               </thead>
               <tbody>
@@ -188,6 +207,7 @@ const AdminDashboard = () => {
                     <td>{feedback.studentId}</td>
                     <td>{feedback.department}</td>
                     <td>{new Date(feedback.submissionDate).toLocaleDateString()}</td>
+                    <td>{feedback.hosteler ? 'Yes' : 'No'}</td>
                   </tr>
                 ))}
               </tbody>
@@ -211,13 +231,33 @@ const AdminDashboard = () => {
               </BarChart>
             </div>
             <div className="chart-container">
-              <h3>Food Quality Ratings</h3>
+              <h3>Hostel Food Quality Ratings</h3>
               <BarChart width={400} height={300} data={formatDataForBarChart(hostelData.hostelFood)}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="rating" />
                 <YAxis />
                 <Tooltip />
                 <Bar dataKey="count" fill="#82ca9d" />
+              </BarChart>
+            </div>
+            <div className="chart-container">
+              <h3>Hostel Cleanliness Ratings</h3>
+              <BarChart width={400} height={300} data={formatDataForBarChart(hostelData.hostelCleanliness)}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="rating" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="count" fill="#ffc658" />
+              </BarChart>
+            </div>
+            <div className="chart-container">
+              <h3>Hostel Staff Behavior Ratings</h3>
+              <BarChart width={400} height={300} data={formatDataForBarChart(hostelData.hostelStaff)}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="rating" />
+                <YAxis />
+                <Tooltip />
+                <Bar dataKey="count" fill="#ff7300" />
               </BarChart>
             </div>
           </div>

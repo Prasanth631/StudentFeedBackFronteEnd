@@ -36,7 +36,7 @@ const AdminDashboardHome = () => {
   return (
     <div className="admin-dashboard-home">
       <header className="dashboard-header">
-        <h1>Admin Dashboard</h1>
+        <h1>Admin Home</h1>
         <div className="header-stats">
           <div className="header-stat">
             <Users size={24} />

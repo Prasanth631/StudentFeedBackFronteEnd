@@ -57,14 +57,14 @@ function FacultyFeedback() {
                 instructorFeedbackData.objectivesClarityRating,
                 instructorFeedbackData.contentRelevanceRating,
                 instructorFeedbackData.assignmentClarityRating,
-                instructorFeedbackData.gradingCriteriaRating
+                instructorFeedbackData.gradingCriteriaRating,
             ];
             
-            const validRatings = ratings.filter(r => r && parseInt(r) > 0);
+            const validRatings = ratings.filter((r) => r && parseInt(r) > 0);
             const overallRating = validRatings.length > 0 
                 ? Math.round(validRatings.reduce((a, b) => parseInt(a) + parseInt(b), 0) / validRatings.length)
                 : 0;
-    
+
             const feedbackData = {
                 courseId: instructorFeedbackData.courseId,
                 instructorId: selectedInstructor.name,
@@ -75,9 +75,9 @@ function FacultyFeedback() {
                 assignmentClarityRating: parseInt(instructorFeedbackData.assignmentClarityRating) || 0,
                 gradingCriteriaRating: parseInt(instructorFeedbackData.gradingCriteriaRating) || 0,
                 comment: instructorFeedbackData.additionalComments || '',
-                additionalComments: instructorFeedbackData.additionalComments || ''
+                additionalComments: instructorFeedbackData.additionalComments || '',
             };
-    
+
             const response = await fetch('/api/instructor-feedback', {
                 method: 'POST',
                 headers: {
@@ -85,7 +85,7 @@ function FacultyFeedback() {
                 },
                 body: JSON.stringify(feedbackData),
             });
-    
+
             if (response.ok) {
                 alert('Instructor Feedback Submitted Successfully');
                 setSelectedInstructor(null);
@@ -114,9 +114,9 @@ function FacultyFeedback() {
     };
 
     const renderRatingDropdown = (name, label) => (
-        <div className="form-group">
+        <div className="sfes-feedback-form-group">
             <label>{label}</label>
-            <div className="select-wrapper">
+            <div className="sfes-feedback-select-wrapper">
                 <select
                     name={name}
                     value={instructorFeedbackData[name]}
@@ -133,110 +133,111 @@ function FacultyFeedback() {
             </div>
         </div>
     );
-
     return (
-        <div className="faculty-feedback-container">
-            <div className="feedback-wrapper">
+        <div className="sfes-faculty-feedback-container">
+            <div className="sfes-feedback-wrapper">
                 <h1>Course Instructor Feedback</h1>
-                <div className="courses-grid">
+                <div className="sfes-courses-grid">
                     {Array.isArray(courses) && courses.length > 0 ? (
                         courses.map((course) => (
                             <div
                                 key={course.id}
-                                className="course-card"
+                                className="sfes-course-card"
                                 onClick={() => handleInstructorSelect(course)}
                             >
-                                <div className="course-header">
+                                <div className="sfes-course-header">
                                     <h3>{course.courseName}</h3>
-                                    <span className="course-code">{course.courseCode}</span>
+                                    <span className="sfes-course-code">{course.courseCode}</span>
                                 </div>
-                                <div className="course-details">
-                                    <p className="instructor-name">{course.instructor}</p>
-                                    <p className="department">{course.department}</p>
+                                <div className="sfes-course-details">
+                                    <p className="sfes-instructor-name">{course.instructor}</p>
+                                    <p className="sfes-department">{course.department}</p>
                                 </div>
                             </div>
                         ))
                     ) : (
-                        <p className="no-courses">No courses available</p>
+                        <p className="sfes-no-courses">No courses available</p>
                     )}
                 </div>
-
+    
                 {selectedInstructor && (
-                    <div className="feedback-modal">
-                        <div className="feedback-content">
+                    <div className="sfes-feedback-modal">
+                        <div className="sfes-feedback-content">
                             <button 
-                                className="close-modal-btn" 
+                                className="sfes-close-modal-btn" 
                                 onClick={closeModal}
                                 aria-label="Close Feedback Modal"
                             >
                                 &times;
                             </button>
                             <h2>Instructor Feedback Form</h2>
-                            <form onSubmit={submitInstructorFeedback}>
-                                <div className="instructor-info">
-                                    <div className="form-group">
-                                        <label>Instructor</label>
-                                        <input
-                                            type="text"
-                                            value={selectedInstructor.name}
-                                            disabled
+                            <div className="sfes-feedback-modal-body">
+                                <form onSubmit={submitInstructorFeedback}>
+                                    <div className="sfes-instructor-info">
+                                        <div className="sfes-feedback-form-group">
+                                            <label>Instructor</label>
+                                            <input
+                                                type="text"
+                                                value={selectedInstructor.name}
+                                                disabled
+                                            />
+                                        </div>
+                                        <div className="sfes-feedback-form-group">
+                                            <label>Course</label>
+                                            <input
+                                                type="text"
+                                                value={courses.find((c) => c.id === selectedInstructor.courseId)?.courseName}
+                                                disabled
+                                            />
+                                        </div>
+                                    </div>
+    
+                                    {renderRatingDropdown(
+                                        'materialExplanationRating', 
+                                        'Course Material Explanation'
+                                    )}
+    
+                                    {renderRatingDropdown(
+                                        'objectivesClarityRating', 
+                                        'Course Objectives Clarity'
+                                    )}
+    
+                                    {renderRatingDropdown(
+                                        'contentRelevanceRating', 
+                                        'Content Relevance'
+                                    )}
+    
+                                    {renderRatingDropdown(
+                                        'assignmentClarityRating', 
+                                        'Assignment Clarity'
+                                    )}
+    
+                                    {renderRatingDropdown(
+                                        'gradingCriteriaRating', 
+                                        'Grading Transparency'
+                                    )}
+    
+                                    <div className="sfes-feedback-form-group sfes-comments-group">
+                                        <label>Additional Comments</label>
+                                        <textarea
+                                            name="additionalComments"
+                                            value={instructorFeedbackData.additionalComments}
+                                            onChange={handleFeedbackChange}
+                                            placeholder="Share your detailed feedback..."
+                                            rows="4"
                                         />
                                     </div>
-                                    <div className="form-group">
-                                        <label>Course</label>
-                                        <input
-                                            type="text"
-                                            value={courses.find(c => c.id === selectedInstructor.courseId)?.courseName}
-                                            disabled
-                                        />
+    
+                                    <div className="sfes-feedback-form-actions">
+                                        <button 
+                                            type="submit" 
+                                            className="sfes-submit-feedback-btn"
+                                        >
+                                            Submit Feedback
+                                        </button>
                                     </div>
-                                </div>
-
-                                {renderRatingDropdown(
-                                    'materialExplanationRating', 
-                                    'Course Material Explanation'
-                                )}
-
-                                {renderRatingDropdown(
-                                    'objectivesClarityRating', 
-                                    'Course Objectives Clarity'
-                                )}
-
-                                {renderRatingDropdown(
-                                    'contentRelevanceRating', 
-                                    'Content Relevance'
-                                )}
-
-                                {renderRatingDropdown(
-                                    'assignmentClarityRating', 
-                                    'Assignment Clarity'
-                                )}
-
-                                {renderRatingDropdown(
-                                    'gradingCriteriaRating', 
-                                    'Grading Transparency'
-                                )}
-
-                                <div className="form-group comments-group">
-                                    <label>Additional Comments</label>
-                                    <textarea
-                                        name="additionalComments"
-                                        value={instructorFeedbackData.additionalComments}
-                                        onChange={handleFeedbackChange}
-                                        placeholder="Share your detailed feedback..."
-                                        rows="4"
-                                    />
-                                </div>
-
-                                <div className="form-actions">
-                                    <button 
-                                        type="submit" 
-                                        className="submit-feedback-btn"
-                                    >
-                                        Submit Feedback
-                                    </button>
-                                </div>
-                            </form>
+                                </form>
+                            </div>
                         </div>
                     </div>
                 )}
@@ -244,5 +245,4 @@ function FacultyFeedback() {
         </div>
     );
 }
-
 export default FacultyFeedback;

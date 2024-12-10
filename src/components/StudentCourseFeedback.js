@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { 
+  MessageSquare,  
+  X 
+} from 'lucide-react';
 import './StudentCourseFeedback.css';
 
 function CourseFeedback() {
@@ -72,31 +76,46 @@ function CourseFeedback() {
     };
 
     return (
-        <div className="course-feedback">
-            <h2>Available Courses</h2>
-            <div className="courses-grid">
+        <div className="student-course-feedback">
+            <div className="student-course-feedback__header">
+                <MessageSquare size={24} className="student-course-feedback__icon" />
+                <h2>Course Feedback</h2>
+            </div>
+
+            <div className="student-course-feedback__grid">
                 {Array.isArray(courses) && courses.length > 0 ? (
                     courses.map((course) => (
                         <div
                             key={course.id}
-                            className="course-card"
+                            className="student-course-card"
                             onClick={() => handleCourseSelect(course)}
                         >
-                            <h3>{course.courseName}</h3>
-                            <p>{course.courseCode}</p>
-                            <p>{course.department}</p>
+                            <div className="student-course-card__content">
+                                <h3>{course.courseName}</h3>
+                                <p>{course.courseCode}</p>
+                                <p className="student-course-card__department">{course.department}</p>
+                            </div>
                         </div>
                     ))
                 ) : (
-                    <p>No courses available</p>
+                    <div className="student-course-feedback__empty">
+                        <p>No courses available</p>
+                    </div>
                 )}
             </div>
+
             {selectedCourse && (
-                <div className="feedback-modal">
-                    <div className="feedback-content">
-                        <h2>Provide Feedback</h2>
-                        <form onSubmit={submitFeedback}>
-                            <div className="form-group">
+                <div className="student-feedback-modal">
+                    <div className="student-feedback-modal__content">
+                        <button 
+                            className="student-feedback-modal__close" 
+                            onClick={closeModal}
+                        >
+                            <X size={24} />
+                        </button>
+                        <h2>Provide Feedback for {selectedCourse.courseName}</h2>
+                        <form onSubmit={submitFeedback} className="student-feedback-form">
+                            <div className="student-form-group">
                                 <label>Course</label>
                                 <input
                                     type="text"
@@ -104,7 +123,7 @@ function CourseFeedback() {
                                     disabled
                                 />
                             </div>
-                            <div className="form-group">
+                            <div className="student-form-group">
                                 <label>Rating</label>
                                 <select
                                     name="rating"
@@ -113,33 +132,36 @@ function CourseFeedback() {
                                     required
                                 >
                                     <option value="">Select Rating</option>
-                                    <option value="1">1 - Poor</option>
-                                    <option value="2">2 - Fair</option>
-                                    <option value="3">3 - Good</option>
-                                    <option value="4">4 - Very Good</option>
-                                    <option value="5">5 - Excellent</option>
+                                    {[1, 2, 3, 4, 5].map((rating) => (
+                                        <option key={rating} value={rating}>
+                                            {rating} {rating === 1 ? 'Star' : 'Stars'}
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
-                            <div className="form-group">
+                            <div className="student-form-group">
                                 <label>Comments</label>
                                 <textarea
                                     name="comment"
                                     value={feedbackData.comment}
                                     onChange={handleFeedbackChange}
-                                    placeholder="Share your feedback"
+                                    placeholder="Share your detailed feedback"
                                     required
                                 />
                             </div>
-                            <div className="form-actions">
-                                <button type="submit" className="submit-feedback-btn">
+                            <div className="student-form-actions">
+                                <button 
+                                    type="submit" 
+                                    className="student-btn student-btn-primary"
+                                >
                                     Submit Feedback
                                 </button>
                                 <button
                                     type="button"
-                                    className="close-modal-btn"
+                                    className="student-btn student-btn-secondary"
                                     onClick={closeModal}
                                 >
-                                    Close
+                                    Cancel
                                 </button>
                             </div>
                         </form>

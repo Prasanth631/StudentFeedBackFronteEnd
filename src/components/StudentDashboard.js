@@ -48,6 +48,7 @@ const StudentDashboard = () => {
     { icon: <MessageSquare size={20} />, text: 'Course Feedback', path: 'coursefeedback' },
     { icon: <Library size={20} />, text: 'General Feedback', path: 'general-feedback-form' }, 
     { icon: <Settings size={20} />, text: 'Settings', path: 'student-settings' },
+    { icon: <Settings size={20} />, text: 'Hostel', path: 'hostel' },
   ];
 
   const toggleSidebar = () => {

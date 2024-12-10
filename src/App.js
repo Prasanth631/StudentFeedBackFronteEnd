@@ -21,6 +21,9 @@ import HomePage from "./components/HomePage.js";
 import AdminHomePage from "./admincomponents/AdminHomePage.js";
 import AdminFacultyFeedbackAnalytics from './admincomponents/AdminFacultyFeedbackAnalytics.js';
 import CourseFeedbackAnalytics from "./admincomponents/CourseFeedbackAnalytics.js";
+import HostelDataEntry from "./components/HostelDataEntry.js";
+
+
 function App() {
   return (
     <Router>
@@ -38,8 +41,7 @@ function App() {
           <Route path="general-feedback-form" element={<GeneralFeedbackForm/>} />
           <Route path="student-settings" element={<SettingsPage/>} />
           <Route path="home" element={<HomePage/>} />
-          <Route path="student-faculty-feedback" element={<div>Student Management Content</div>} />
-          <Route path="calendar" element={<div>Academic Calendar Page</div>} />
+          <Route path="hostel" element={<HostelDataEntry/>} />
           <Route path="services" element={<div>Student Services Page</div>} />
           
         </Route>
@@ -53,7 +55,6 @@ function App() {
           <Route path="admin-home" element={<AdminHomePage/>} />
           <Route path="faculty-feedback-analytics" element={<AdminFacultyFeedbackAnalytics/>} />
           <Route path="course-feedback-analytics" element={<CourseFeedbackAnalytics/>} />
-          <Route path="system-analytics" element={<div>System Analytics Contents</div>} />
         </Route>
       </Routes>
     </Router>

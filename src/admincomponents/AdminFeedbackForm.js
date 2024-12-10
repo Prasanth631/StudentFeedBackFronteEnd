@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import "./AdminFeedbackForm.css"
+import "./AdminFeedbackForm.css";
+
 const AdminNotificationForm = () => {
     const [formData, setFormData] = useState({
         title: '',
@@ -23,33 +24,33 @@ const AdminNotificationForm = () => {
         }));
     };
     const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-          const feedbackForm = {
-              title: formData.title,
-              customTitle: formData.title === 'CUSTOM' ? formData.customTitle : null,
-              description: formData.description,
-              closingDate: new Date(formData.closingDate),
-              urgent: formData.isUrgent
-          };
-          await axios.post('/api/admin/feedback/forms', feedbackForm);
-          alert('Notification created successfully!');
-          setFormData({
-              title: '',
-              description: '',
-              closingDate: '',
-              isUrgent: false
-          });
-      } catch (error) {
-          console.error('Error creating notification:', error);
-          alert('Failed to create notification');
-      }
-  };
+        e.preventDefault();
+        try {
+            const feedbackForm = {
+                title: formData.title,
+                customTitle: formData.title === 'CUSTOM' ? formData.customTitle : null,
+                description: formData.description,
+                closingDate: new Date(formData.closingDate),
+                urgent: formData.isUrgent
+            };
+            await axios.post('/api/admin/feedback/forms', feedbackForm);
+            alert('Notification created successfully!');
+            setFormData({
+                title: '',
+                description: '',
+                closingDate: '',
+                isUrgent: false
+            });
+        } catch (error) {
+            console.error('Error creating notification:', error);
+            alert('Failed to create notification');
+        }
+    };
     return (
-        <div className="admin-notification-form">
+        <div className="af-admin-notification-form">
             <h2>Create New Feedback Form Notification</h2>
             <form onSubmit={handleSubmit}>
-                <div>
+                <div className="af-form-group">
                     <label>Form Title:</label>
                     <select 
                         name="title"
@@ -65,7 +66,7 @@ const AdminNotificationForm = () => {
                 </div>
 
                 {formData.title === 'CUSTOM' && (
-                    <div>
+                    <div className="af-form-group">
                         <label>Custom Title:</label>
                         <input
                             type="text"
@@ -76,7 +77,7 @@ const AdminNotificationForm = () => {
                         />
                     </div>
                 )}
-                <div>
+                <div className="af-form-group">
                     <label>Description:</label>
                     <textarea
                         name="description"
@@ -85,7 +86,7 @@ const AdminNotificationForm = () => {
                         required
                     />
                 </div>
-                <div>
+                <div className="af-form-group">
                     <label>Closing Date:</label>
                     <input
                         type="datetime-local"
@@ -95,7 +96,7 @@ const AdminNotificationForm = () => {
                         required
                     />
                 </div>
-                <div>
+                <div className="af-form-group af-checkbox-group">
                     <label>
                         <input
                             type="checkbox"
@@ -106,9 +107,10 @@ const AdminNotificationForm = () => {
                         Mark as Urgent
                     </label>
                 </div>
-                <button type="submit">Create Notification</button>
+                <button className="af-submit-button" type="submit">Create Notification</button>
             </form>
         </div>
     );
 };
+
 export default AdminNotificationForm;
