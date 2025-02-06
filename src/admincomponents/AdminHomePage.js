@@ -16,7 +16,7 @@ const AdminDashboardHome = () => {
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/admin/dashboard');
+        const response = await fetch('http://localhost:8081/api/admin/dashboard');
         const data = await response.json();
         setDashboardData(data);
         setLoading(false);

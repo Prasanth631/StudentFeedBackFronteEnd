@@ -174,7 +174,7 @@ const GeneralFeedbackForm = () => {
     setLoading(true);
     
     try {
-      const response = await fetch('http://localhost:8080/api/feedback/submit', {
+      const response = await fetch('http://localhost:8081/api/feedback/submit', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

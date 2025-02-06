@@ -169,7 +169,7 @@ function Signup() {
       password
     };
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/signup', user);
+      const response = await axios.post('http://localhost:8081/api/auth/signup', user);
       if (response.data.success) {
           console.log('Server response:', response.data);
       }

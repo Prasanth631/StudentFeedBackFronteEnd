@@ -19,7 +19,7 @@ const AdminDashboard = () => {
 
   const fetchDashboardData = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/feedback/all');
+      const response = await fetch('http://localhost:8081/api/feedback/all');
       const data = await response.json();
       
       // Process dashboard data
@@ -43,8 +43,8 @@ const AdminDashboard = () => {
   const fetchHostelData = async () => {
     try {
       // Fetch from both general feedback and hostel-specific endpoints
-      const generalFeedbackResponse = await fetch('http://localhost:8080/api/feedback/hosteler/true');
-      const hostelDataResponse = await fetch('http://localhost:8080/api/hostel/all');
+      const generalFeedbackResponse = await fetch('http://localhost:8081/api/feedback/hosteler/true');
+      const hostelDataResponse = await fetch('http://localhost:8081/api/hostel/all');
       
       const generalHostelData = await generalFeedbackResponse.json();
       const specificHostelData = await hostelDataResponse.json();
@@ -84,7 +84,7 @@ const AdminDashboard = () => {
 
   const fetchCanteenData = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/feedback/all');
+      const response = await fetch('http://localhost:8081/api/feedback/all');
       const data = await response.json();
       
       // Process canteen data

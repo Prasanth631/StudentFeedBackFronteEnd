@@ -14,7 +14,7 @@ function HomePage() {
     const fetchHomePageData = async () => {
       try {
         // Fetch courses
-        const coursesResponse = await axios.get('http://localhost:8080/api/courses');
+        const coursesResponse = await axios.get('http://localhost:8081/api/courses');
         setCourses(coursesResponse.data);
 
         setUserData({ email: 'user@example.com', phoneNumber: '1234567890', profilePicture: true });
