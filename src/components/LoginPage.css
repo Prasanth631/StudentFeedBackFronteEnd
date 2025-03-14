@@ -185,3 +185,38 @@ canvas {
   border: 1px solid #ddd;
   border-radius: 4px;
 }
+.password-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.password-wrapper .input-field {
+  width: 100%;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  color: #777;
+  font-size: 16px;
+  padding: 0 5px;
+  /* Prevent text selection */
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.eye-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-style: normal;
+}

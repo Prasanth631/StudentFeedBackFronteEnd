@@ -11,6 +11,7 @@ function Login() {
   const [captchaText, setCaptchaText] = useState("");
   const [userCaptcha, setUserCaptcha] = useState("");
   const [captchaError, setCaptchaError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const generateCaptcha = () => {
@@ -37,7 +38,7 @@ function Login() {
     }
     try {
       const response = await axios.post(
-        "https://sfesbackend.netlify.app/api/auth/login",{username,password,}
+        "http://localhost:8081/api/auth/login",{username,password,}
       );
       if (response.status === 200) {
         const { role } = response.data;
@@ -60,6 +61,11 @@ function Login() {
       setUserCaptcha("");
     }
   };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
+
   const CaptchaImage = React.memo(({ text }) => {
     const canvasRef = React.useRef(null);
     useEffect(() => {
@@ -117,15 +123,24 @@ function Login() {
 
             <div className="input-group">
               <span className="input-label">Password</span>
-              <input
-                type="password"
-                id="password"
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                className="input-field"
-              />
+              <div className="password-wrapper">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  placeholder="Enter your password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="input-field"
+                />
+                <span className="password-toggle" onClick={togglePasswordVisibility}>
+                  {showPassword ? (
+                    <span className="eye-icon">👁️</span>
+                  ) : (
+                    <span className="eye-icon">👁️‍🗨️</span>
+                  )}
+                </span>
+              </div>
             </div>
 
             <div className="input-group">
